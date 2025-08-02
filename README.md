@@ -4,17 +4,78 @@ Aadim’s production-ready **Theater Booking System**, built with FastAPI, Postg
 
 ---
 
-## 🌟 Features
+## 🌟 Top Features (Grouped)
+🔐 SECURITY
+JWT Authentication and bcrypt password hashing
 
-- ✅ **FastAPI-based microservice architecture**
-- 🔐 JWT authentication & bcrypt password hashing
-- 🛡️ Rate limiting (Redis), secure sessions (Fernet encryption)
-- 📊 Prometheus metrics and Grafana dashboards
-- 🧪 Full test suite with `pytest`, `pytest-asyncio`
-- 🐳 Docker & Kubernetes deployment ready
-- 📦 Database migrations with rollback support
-- 🛠️ Production CLI for health checks, reports, audits
+Rate Limiting via Redis and SlowAPI
 
+Session Management with encrypted Redis storage
+
+Account Lockout & Fraud Detection
+
+SQL Injection prevention
+
+Security Headers + TLS/SSL configs
+
+Audit Logging (via migration)
+
+🚀 PERFORMANCE & SCALABILITY
+Asynchronous (async/await) operations throughout
+
+Connection Pooling (PostgreSQL via asyncpg)
+
+Redis Caching with stats tracking (hits/misses)
+
+Query Optimizer with EXPLAIN ANALYZE integration
+
+Auto-scaling with Kubernetes and Helm
+
+🧪 TESTING SUITE
+Unit, integration, security & load tests (using pytest, pytest-asyncio)
+
+Mocked Redis/DB fixtures
+
+Fraud & performance tests, including concurrency and rate limiting
+
+📊 OBSERVABILITY & MONITORING
+Prometheus metrics collection
+
+Grafana dashboards supported
+
+Structured Logging with structlog
+
+Health check and /metrics endpoints
+
+System health scoring logic with thresholds
+
+⚙️ DEVOPS & DEPLOYMENT
+Docker & Docker Compose setup (multi-stage builds)
+
+Kubernetes Deployment & Helm Charts
+
+NGINX Reverse Proxy with rate limits and SSL
+
+Trivy Security Scans in CI/CD pipeline
+
+Makefile & deployment scripts for automation
+
+📈 BUSINESS LOGIC & CLI
+CLI tool for:
+
+Database migrations
+
+Cache stats
+
+Health checks
+
+Security audits
+
+Report generation
+
+Dynamic fraud scoring based on activity
+
+Session tracking and login auditing
 ---
 
 ## 🚀 Getting Started

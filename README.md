@@ -17,6 +17,14 @@ Aadim’s production-ready **Theater Booking System**, built with FastAPI, Postg
 
 ---
 
+💡 Author
+Aadim Dhakal
+💻 A Freelancer | Security Enthusiast
+📧 Contact: dhakalaadim@gmail.com
+🔗 GitHub: github.com/Aadim-alt
+
+
+
 ## 🚀 Getting Started
 
 ### 1. Clone the repo
@@ -24,11 +32,4 @@ Aadim’s production-ready **Theater Booking System**, built with FastAPI, Postg
 ```bash
 git clone https://github.com/Aadim-alt/theater-system.git
 cd theater-system
-
-💡 Author
-Aadim Dhakal
-💻 A Freelancer | Security Enthusiast
-📧 Contact: dhakalaadim@gmail.com
-🔗 GitHub: github.com/Aadim-alt
-
 

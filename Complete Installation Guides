@@ -1,0 +1,595 @@
+# 📦 Enhanced Theater Management System - Installation Guide
+
+## 🚀 Quick Start
+
+### 1. System Requirements
+
+**Minimum Requirements:**
+- Python 3.11+
+- PostgreSQL 13+
+- Redis 6+
+- 4GB RAM
+- 2 CPU cores
+
+**Recommended for Production:**
+- Python 3.11+
+- PostgreSQL 15+
+- Redis 7+
+- 8GB+ RAM
+- 4+ CPU cores
+- SSD storage
+
+### 2. Core Python Dependencies
+
+Create `requirements.txt`:
+
+```txt
+# Core Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database & Caching
+asyncpg==0.29.0
+redis==5.0.1
+sqlalchemy[asyncio]==2.0.23
+
+# Data Validation & Serialization
+pydantic[email]==2.5.0
+pydantic-settings==2.1.0
+
+# Authentication & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.1.2
+cryptography==41.0.8
+python-multipart==0.0.6
+
+# Rate Limiting & Security
+slowapi==0.1.9
+python-limiter==3.5.0
+
+# Logging & Monitoring
+structlog==23.2.0
+prometheus-client==0.19.0
+
+# Background Tasks
+celery[redis]==5.3.4
+kombu==5.3.4
+
+# HTTP Client (for external APIs)
+httpx==0.25.2
+aiohttp==3.9.1
+
+# Date/Time Handling
+python-dateutil==2.8.2
+pytz==2023.3
+
+# Configuration Management
+python-dotenv==1.0.0
+pyyaml==6.0.1
+
+# JSON Processing
+orjson==3.9.10
+
+# Async Utilities
+asyncio-mqtt==0.16.1
+```
+
+### 3. Development Dependencies
+
+Create `requirements-dev.txt`:
+
+```txt
+# Testing Framework
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+pytest-xdist==3.5.0
+httpx==0.25.2
+
+# Code Quality
+black==23.11.0
+isort==5.12.0
+flake8==6.1.0
+mypy==1.7.1
+bandit==1.7.5
+safety==2.3.5
+
+# Documentation
+sphinx==7.2.6
+sphinx-rtd-theme==1.3.0
+
+# Performance Testing
+locust==2.17.0
+memory-profiler==0.61.0
+
+# Database Testing
+pytest-postgresql==5.0.0
+fakeredis==2.20.0
+
+# Load Testing
+artillery==1.7.0
+```
+
+### 4. System Dependencies (Ubuntu/Debian)
+
+```bash
+# Update system packages
+sudo apt update && sudo apt upgrade -y
+
+# Install system dependencies
+sudo apt install -y \
+    python3.11 \
+    python3.11-dev \
+    python3-pip \
+    python3-venv \
+    postgresql-15 \
+    postgresql-contrib \
+    redis-server \
+    nginx \
+    git \
+    curl \
+    wget \
+    build-essential \
+    libpq-dev \
+    libssl-dev \
+    libffi-dev \
+    pkg-config
+
+# Install Docker (for containerization)
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+
+# Install Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+### 5. System Dependencies (CentOS/RHEL/Rocky Linux)
+
+```bash
+# Update system packages
+sudo dnf update -y
+
+# Install EPEL repository
+sudo dnf install -y epel-release
+
+# Install system dependencies
+sudo dnf install -y \
+    python3.11 \
+    python3.11-devel \
+    python3-pip \
+    postgresql15-server \
+    postgresql15-contrib \
+    redis \
+    nginx \
+    git \
+    curl \
+    wget \
+    gcc \
+    gcc-c++ \
+    make \
+    postgresql-devel \
+    openssl-devel \
+    libffi-devel
+
+# Initialize PostgreSQL
+sudo postgresql-setup --initdb
+sudo systemctl enable postgresql redis nginx
+sudo systemctl start postgresql redis nginx
+```
+
+### 6. System Dependencies (macOS)
+
+```bash
+# Install Homebrew (if not installed)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install dependencies
+brew install \
+    python@3.11 \
+    postgresql@15 \
+    redis \
+    nginx \
+    git \
+    curl \
+    wget
+
+# Start services
+brew services start postgresql@15
+brew services start redis
+```
+
+## 🔧 Installation Steps
+
+### 1. Clone and Setup Project
+
+```bash
+# Clone the repository (or create new directory)
+git clone <your-repo-url> theater-system
+cd theater-system
+
+# Create virtual environment
+python3.11 -m venv theater-env
+source theater-env/bin/activate  # On Windows: theater-env\Scripts\activate
+
+# Upgrade pip
+pip install --upgrade pip setuptools wheel
+```
+
+### 2. Install Python Dependencies
+
+```bash
+# Install core dependencies
+pip install -r requirements.txt
+
+# Install development dependencies (for development/testing)
+pip install -r requirements-dev.txt
+
+# Verify installation
+pip list | grep -E "(fastapi|asyncpg|redis|pytest)"
+```
+
+### 3. Database Setup
+
+```bash
+# Switch to postgres user
+sudo -u postgres psql
+
+# Create database and user
+CREATE DATABASE theater_db;
+CREATE USER theater_user WITH ENCRYPTED PASSWORD 'secure_password';
+GRANT ALL PRIVILEGES ON DATABASE theater_db TO theater_user;
+ALTER USER theater_user CREATEDB;  -- For running tests
+\q
+
+# Test connection
+psql -h localhost -U theater_user -d theater_db -c "SELECT version();"
+```
+
+### 4. Redis Configuration
+
+```bash
+# Edit Redis configuration (optional)
+sudo nano /etc/redis/redis.conf
+
+# Recommended settings for production:
+# maxmemory 256mb
+# maxmemory-policy allkeys-lru
+# save 900 1
+# save 300 10
+# save 60 10000
+
+# Restart Redis
+sudo systemctl restart redis
+
+# Test Redis connection
+redis-cli ping  # Should return PONG
+```
+
+### 5. Environment Configuration
+
+Create `.env` file in project root:
+
+```bash
+# Database Configuration
+DATABASE_URL=postgresql://theater_user:secure_password@localhost:5432/theater_db
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=theater_db
+DB_USER=theater_user
+DB_PASSWORD=secure_password
+DB_POOL_SIZE=20
+
+# Redis Configuration
+REDIS_URL=redis://localhost:6379/0
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_DB=0
+REDIS_PASSWORD=
+
+# Security Configuration
+SECRET_KEY=your-super-secret-key-here-change-in-production
+JWT_SECRET_KEY=your-jwt-secret-key-here
+ENCRYPTION_KEY=your-encryption-key-here
+
+# Application Configuration
+DEBUG=False
+LOG_LEVEL=INFO
+HOST=0.0.0.0
+PORT=8000
+
+# External Services (if applicable)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+
+# Monitoring
+PROMETHEUS_PORT=9090
+GRAFANA_PORT=3000
+```
+
+### 6. Initialize Database
+
+```bash
+# Run the application to create tables
+python ticket.py
+
+# Or run migrations separately (if implemented)
+python -c "
+import asyncio
+from ticket import TheaterManagementService, SystemConfig
+
+async def init_db():
+    config = SystemConfig()
+    service = TheaterManagementService(config)
+    await service.initialize()
+    await service.cleanup()
+
+asyncio.run(init_db())
+"
+```
+
+## 🐳 Docker Installation (Recommended for Production)
+
+### 1. Docker Compose Setup
+
+Create `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+
+services:
+  theater-app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://theater_user:secure_password@postgres:5432/theater_db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=theater_db
+      - POSTGRES_USER=theater_user
+      - POSTGRES_PASSWORD=secure_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+```
+
+### 2. Build and Run with Docker
+
+```bash
+# Build and start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f theater-app
+
+# Stop services
+docker-compose down
+
+# Rebuild after code changes
+docker-compose up --build -d
+```
+
+## 🧪 Verify Installation
+
+### 1. Run Tests
+
+```bash
+# Activate virtual environment
+source theater-env/bin/activate
+
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ --cov=theater --cov-report=html
+
+# Run specific test categories
+pytest tests/test_security.py -v
+pytest tests/test_performance.py -v
+```
+
+### 2. Start Application
+
+```bash
+# Development mode
+python ticket.py
+
+# Or with uvicorn directly
+uvicorn ticket:app --host 0.0.0.0 --port 8000 --reload
+
+# Production mode
+uvicorn ticket:app --host 0.0.0.0 --port 8000 --workers 4
+```
+
+### 3. Test Endpoints
+
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# API documentation
+open http://localhost:8000/api/docs
+
+# Metrics endpoint
+curl http://localhost:8000/metrics
+```
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+**1. PostgreSQL Connection Error:**
+```bash
+# Check if PostgreSQL is running
+sudo systemctl status postgresql
+
+# Check connection
+psql -h localhost -U theater_user -d theater_db
+
+# Reset password if needed
+sudo -u postgres psql -c "ALTER USER theater_user PASSWORD 'new_password';"
+```
+
+**2. Redis Connection Error:**
+```bash
+# Check if Redis is running
+sudo systemctl status redis
+
+# Test connection
+redis-cli ping
+
+# Check Redis logs
+sudo journalctl -u redis
+```
+
+**3. Python Package Installation Issues:**
+```bash
+# Upgrade pip and tools
+pip install --upgrade pip setuptools wheel
+
+# Install with verbose output
+pip install -v <package-name>
+
+# Clear pip cache
+pip cache purge
+```
+
+**4. Permission Issues:**
+```bash
+# Fix file permissions
+chmod +x scripts/deploy.sh
+
+# Fix directory permissions
+sudo chown -R $USER:$USER /path/to/project
+```
+
+## 🚀 Production Deployment
+
+### 1. Additional Production Packages
+
+```bash
+# Install production WSGI server
+pip install gunicorn
+
+# Install process manager
+sudo apt install supervisor
+
+# Install monitoring tools
+pip install psutil
+```
+
+### 2. Production Environment Variables
+
+```bash
+# Set production environment
+export ENVIRONMENT=production
+export DEBUG=False
+export SECRET_KEY="$(openssl rand -hex 32)"
+export JWT_SECRET_KEY="$(openssl rand -hex 32)"
+```
+
+### 3. System Service Setup
+
+Create `/etc/systemd/system/theater.service`:
+
+```ini
+[Unit]
+Description=Theater Management System
+After=network.target postgresql.service redis.service
+
+[Service]
+Type=notify
+User=theater
+Group=theater
+WorkingDirectory=/opt/theater-system
+Environment=PATH=/opt/theater-system/theater-env/bin
+ExecStart=/opt/theater-system/theater-env/bin/gunicorn ticket:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+# Enable and start service
+sudo systemctl enable theater.service
+sudo systemctl start theater.service
+sudo systemctl status theater.service
+```
+
+## 📋 Checklist
+
+- [ ] Python 3.11+ installed
+- [ ] PostgreSQL 15+ installed and configured
+- [ ] Redis 7+ installed and running
+- [ ] Virtual environment created
+- [ ] All dependencies installed
+- [ ] Environment variables configured
+- [ ] Database initialized
+- [ ] Tests passing
+- [ ] Application starts successfully
+- [ ] Endpoints responding
+- [ ] Docker setup working (if using)
+- [ ] Production configuration ready
+
+## 🆘 Support
+
+If you encounter issues:
+
+1. **Check logs**: Application logs, PostgreSQL logs, Redis logs
+2. **Verify dependencies**: Ensure all required packages are installed
+3. **Check configuration**: Verify environment variables and config files
+4. **Test connections**: Database and Redis connectivity
+5. **Review documentation**: FastAPI, PostgreSQL, Redis documentation
+6. **Community support**: Stack Overflow, GitHub issues
+
+---
+
+🎉 **Congratulations!** Your Enhanced Theater Management System is now ready for development and production use!

@@ -1,5 +1,3 @@
-# Enhanced Theater Management System - Security, Testing & Containerization
-# Added: Advanced Security, Rate Limiting, Testing Framework, Docker Support
 
 import asyncio
 import logging

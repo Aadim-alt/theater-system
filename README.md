@@ -5,7 +5,7 @@ Aadim’s production-ready **Theater Booking System**, built with FastAPI, Postg
 ---
 
 ## 🌟 Top Features (Grouped)
-🔐 SECURITY
+##🔐 SECURITY
 JWT Authentication and bcrypt password hashing
 
 Rate Limiting via Redis and SlowAPI
@@ -20,7 +20,7 @@ Security Headers + TLS/SSL configs
 
 Audit Logging (via migration)
 
-🚀 PERFORMANCE & SCALABILITY
+##🚀 PERFORMANCE & SCALABILITY
 Asynchronous (async/await) operations throughout
 
 Connection Pooling (PostgreSQL via asyncpg)
@@ -31,14 +31,14 @@ Query Optimizer with EXPLAIN ANALYZE integration
 
 Auto-scaling with Kubernetes and Helm
 
-🧪 TESTING SUITE
+##🧪 TESTING SUITE
 Unit, integration, security & load tests (using pytest, pytest-asyncio)
 
 Mocked Redis/DB fixtures
 
 Fraud & performance tests, including concurrency and rate limiting
 
-📊 OBSERVABILITY & MONITORING
+##📊 OBSERVABILITY & MONITORING
 Prometheus metrics collection
 
 Grafana dashboards supported
@@ -49,7 +49,7 @@ Health check and /metrics endpoints
 
 System health scoring logic with thresholds
 
-⚙️ DEVOPS & DEPLOYMENT
+##⚙️ DEVOPS & DEPLOYMENT
 Docker & Docker Compose setup (multi-stage builds)
 
 Kubernetes Deployment & Helm Charts
@@ -60,7 +60,7 @@ Trivy Security Scans in CI/CD pipeline
 
 Makefile & deployment scripts for automation
 
-📈 BUSINESS LOGIC & CLI
+##📈 BUSINESS LOGIC & CLI
 CLI tool for:
 
 Database migrations

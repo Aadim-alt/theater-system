@@ -70,6 +70,9 @@ theater-system/
 ├── ssl/                        # Self-signed certs (dev only)
 ├── README.md                   # You're reading it!
 └── LICENSE                     # Open source license
+
+
+
 🛡️ Security & Performance
 Encrypted JWT tokens and sessions
 
@@ -90,13 +93,22 @@ Alerting rules for response time, error rate, fraud detection
 
 🔄 CI/CD compatible via Makefile + deployment scripts
 
+
+
+
 🤝 Contributing
 Pull requests welcome! Please open an issue first to discuss what you'd like to change.
 
 Want to add fraud scoring, loyalty system, or SMS/email integration? Let's collaborate!
 
+
+
+
 📄 License
 This project is licensed under the MIT License
+
+
+
 
 💡 Author
 Aadim Dhakal

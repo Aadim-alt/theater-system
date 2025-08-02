@@ -18,9 +18,13 @@ Aadim’s production-ready **Theater Booking System**, built with FastAPI, Postg
 ---
 
 💡 Author
+
 Aadim Dhakal
+
 💻 A Freelancer | Security Enthusiast
+
 📧 Contact: dhakalaadim@gmail.com
+
 🔗 GitHub: github.com/Aadim-alt
 
 
